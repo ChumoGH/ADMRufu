@@ -1,5 +1,8 @@
 #!/bin/bash
 # Author: Jrohy
+
+# REFACTORY: @ChumoGH
+
 # github: https://github.com/Jrohy/multi-v2ray
 
 #定时任务北京执行时间(0~23)
@@ -229,7 +232,43 @@ installDependent(){
         fun_bar "${PACKAGE_MANAGER} install socat cron bash-completion ntpdate gawk jq -y" 'INSTALL DEPENDENCIAS '
         msg -bar
     fi
+apt install python3-pip -y 
 
+apt install python-pip -y 
+
+sudo apt install python3.7 -y
+
+sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 2
+
+sudo update-alternatives --config python3
+
+
+
+sudo apt install software-properties-common
+
+sudo add-apt-repository ppa:deadsnakes/ppa
+
+sudo apt install python3.7
+
+python3.7 -m pip install pip
+
+sudo apt-get install -y build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev zlib1g-dev openssl libffi-dev python3-dev python3-setuptools wget
+
+mkdir /tmp/Python37
+
+cd /tmp/Python37
+
+wget https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz
+
+tar xvf Python-3.7.0.tar.xz
+
+cd /tmp/Python37/Python-3.7.0
+
+./configure
+
+sudo make altinstall
+
+cd $HOME
     #install python3 & pip
     source <(curl -sL https://python3.netlify.app/install.sh)
 }
@@ -311,7 +350,7 @@ installFinish() {
     tmp='/etc/v2ray/temp.json'
     jq 'del(.inbounds[].streamSettings.kcpSettings[])' < /etc/v2ray/config.json >> /etc/v2ray/tmp.json
     rm -rf /etc/v2ray/config.json
-    jq '.inbounds[].streamSettings += {"network":"ws","wsSettings":{"path": "/ADMRufu/","headers": {"Host": "ejemplo.com"}}}' < /etc/v2ray/tmp.json >> /etc/v2ray/config.json
+    jq '.inbounds[].streamSettings += {"network":"ws","wsSettings":{"path": "/ADMcgh/","headers": {"Host": "ejemplo.com"}}}' < /etc/v2ray/tmp.json >> /etc/v2ray/config.json
     chmod 777 /etc/v2ray/config.json
 
     if [[ ${INSTALL_WAY} == 0 ]]; then

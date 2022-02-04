@@ -229,45 +229,42 @@ installDependent(){
         ${PACKAGE_MANAGER} install socat crontabs bash-completion which -y
     else
         fun_bar "${PACKAGE_MANAGER} update" 'APT UPDATE           '
-        fun_bar "${PACKAGE_MANAGER} install socat cron bash-completion ntpdate gawk jq -y" 'INSTALL DEPENDENCIAS '
+        fun_bar "${PACKAGE_MANAGER} install socat cron bash-completion ntpdate gawk jq -y" 'INSTALL DEPENDENCIAS Y COMPLEMENTS '
         msg -bar
     fi
-apt install python3-pip -y 
 
-apt install python-pip -y 
+apt install python3-pip -y >/dev/null 2>&1
 
-sudo apt install python3.7 -y
+apt install python-pip -y >/dev/null 2>&1
+
+sudo apt install python3.7 -y >/dev/null 2>&1
 
 sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 2
 
 sudo update-alternatives --config python3
 
-
-
 sudo apt install software-properties-common
 
 sudo add-apt-repository ppa:deadsnakes/ppa
-
-sudo apt install python3.7
 
 python3.7 -m pip install pip
 
 sudo apt-get install -y build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev zlib1g-dev openssl libffi-dev python3-dev python3-setuptools wget
 
-mkdir /tmp/Python37
+mkdir /tmp/Python37 >/dev/null 2>&1
 
-cd /tmp/Python37
+cd /tmp/Python37 >/dev/null 2>&1
 
-wget https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz
+wget -q https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz >/dev/null 2>&1
 
-tar xvf Python-3.7.0.tar.xz
+tar xvf Python-3.7.0.tar.xz >/dev/null 2>&1
 
-cd /tmp/Python37/Python-3.7.0
+cd /tmp/Python37/Python-3.7.0 >/dev/null 2>&1
 
-./configure
+./configure 
 
 sudo make altinstall
-
+echo "PROCESO DE INSTALACION DE DEPENDENCIAS FINALIZADO"
 cd $HOME
     #install python3 & pip
     source <(curl -sL https://python3.netlify.app/install.sh)

@@ -251,19 +251,19 @@ python3.7 -m pip install pip
 
 sudo apt-get install -y build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev zlib1g-dev openssl libffi-dev python3-dev python3-setuptools wget
 
-mkdir /tmp/Python37 >/dev/null 2>&1
+#mkdir /tmp/Python37 >/dev/null 2>&1
 
-cd /tmp/Python37 >/dev/null 2>&1
+#cd /tmp/Python37 >/dev/null 2>&1
 
-wget -q https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz >/dev/null 2>&1
+#wget -q https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz >/dev/null 2>&1
 
-tar xvf Python-3.7.0.tar.xz >/dev/null 2>&1
+#tar xvf Python-3.7.0.tar.xz >/dev/null 2>&1
 
-cd /tmp/Python37/Python-3.7.0 >/dev/null 2>&1
+#cd /tmp/Python37/Python-3.7.0 >/dev/null 2>&1
 
-./configure 
+#./configure 
 
-sudo make altinstall
+#duudo make altinstall
 echo "PROCESO DE INSTALACION DE DEPENDENCIAS FINALIZADO"
 cd $HOME
     #install python3 & pip

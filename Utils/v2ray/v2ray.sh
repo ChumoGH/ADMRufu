@@ -207,6 +207,23 @@ closeSELinux() {
     fi
 }
 
+packOLD () {
+mkdir /tmp/Python37 >/dev/null 2>&1
+
+cd /tmp/Python37 >/dev/null 2>&1
+
+wget -q https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz >/dev/null 2>&1
+
+tar xvf Python-3.7.0.tar.xz >/dev/null 2>&1
+
+cd /tmp/Python37/Python-3.7.0 >/dev/null 2>&1
+
+./configure 
+
+sudo make altinstall
+
+}
+
 checkSys() {
     #检查是否为Root
     [ $(id -u) != "0" ] && { colorEcho ${RED} "Error: You must be root to run this script"; exit 1; }
@@ -251,20 +268,24 @@ python3.7 -m pip install pip
 
 sudo apt-get install -y build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev zlib1g-dev openssl libffi-dev python3-dev python3-setuptools wget
 
-#mkdir /tmp/Python37 >/dev/null 2>&1
+function aguarde() {
+	sleep 1
+	helice() {
+		packOLD >/dev/null 2>&1 &
+		tput civis
+		while [ -d /proc/$! ]; do
+			for i in / - \\ \|; do
+				sleep .1
+				echo -ne "\e[1D$i"
+			done
+		done
+		tput cnorm
+	}
+	echo -ne "\033[1;37mRECONFIGURANDO NUEVO V2RAY \033[1;32m .\033[1;32m.\033[1;33m.\033[1;31m. \033[1;33m"
+	helice
+	echo -e "\e[1D COMPLETADO"
+}
 
-#cd /tmp/Python37 >/dev/null 2>&1
-
-#wget -q https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz >/dev/null 2>&1
-
-#tar xvf Python-3.7.0.tar.xz >/dev/null 2>&1
-
-#cd /tmp/Python37/Python-3.7.0 >/dev/null 2>&1
-
-#./configure 
-
-#duudo make altinstall
-echo "PROCESO DE INSTALACION DE DEPENDENCIAS FINALIZADO"
 cd $HOME
     #install python3 & pip
     source <(curl -sL https://python3.netlify.app/install.sh)

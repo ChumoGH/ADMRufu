@@ -73,7 +73,7 @@ closeSELinux(){
 }
 
 timeSync(){
-	print_center -blu "Sincronización de tiempo ..."
+	echo -e  "Sincronización de tiempo ..."
 	if [[ `command -v ntpdate` ]];then
 		ntpdate pool.ntp.org
 	elif [[ `command -v chronyc` ]];then
@@ -87,10 +87,30 @@ timeSync(){
 	msg -bar
 }
 
+
+function aguarde() {
+	sleep 1
+	helice() {
+		updateProject >/dev/null 2>&1 &
+		tput civis
+		while [ -d /proc/$! ]; do
+			for i in / - \\ \|; do
+				sleep .1
+				echo -ne "\e[1D$i"
+			done
+		done
+		tput cnorm
+	}
+	echo -ne "\033[1;37mINTALANDO Y FIXEANDO \033[1;32mV2RAY \033[1;37my \033[1;32mXRAY\033[1;32m.\033[1;33m.\033[1;31m. \033[1;33m"
+	helice
+	echo -e "\e[1DOk"
+}
+aguarde
+
 updateProject(){
 	if [[ ! $(type pip 2>/dev/null) ]]; then
 		echo -e 'Falta en la dependencia pip\nNo se puede continuar con la instalacion'
-		read -p " PRESIONA ENTER PARA CONTINUAR"
+		read -p " ENTER PARA CONTINUAR"
 		return 1
 	fi
     pip install -U v2ray_util
@@ -113,7 +133,7 @@ updateProject(){
         source /usr/share/bash-completion/completions/xray
     fi
     # bash <(curl -L -s https://multi.netlify.app/go.sh)
-    bash <(curl -L -s https://raw.githubusercontent.com/rudi9999/ADMRufu/main/Utils/v2ray/go.sh) --version v4.45.2
+    bash <(curl -L -s https://raw.githubusercontent.com/rudi9999/ADMRufu/main/Utils/v2ray/go.sh) --version v4.45.2 
 }
 
 profileInit(){
@@ -142,8 +162,8 @@ installFinish(){
         echo -e "\033[1;32mINSTALACION FINALIZADA"
         echo -e "\033[1;31m "  'Pero fallo el reinicio del servicio v2ray'
     fi
-    print_center -ama "Por favor verifique el log"
-    enter
+    echo -e  "Por favor verifique el log"
+    read -p " presiona enter"
 }
 
 main(){

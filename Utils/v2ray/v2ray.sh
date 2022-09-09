@@ -87,11 +87,27 @@ timeSync(){
 	msg -bar
 }
 
+fun_limpram() {
+	sync
+	echo 3 >/proc/sys/vm/drop_caches
+	sync && sysctl -w vm.drop_caches=3
+	sysctl -w vm.drop_caches=0
+	swapoff -a
+	swapon -a
+	v2ray new 1> /dev/null 2> /dev/null
+	rm -rf /tmp/* > /dev/null 2>&1
+	killall kswapd0 > /dev/null 2>&1
+	killall tcpdump > /dev/null 2>&1
+	killall ksoftirqd > /dev/null 2>&1
+	rm -f /var/log/syslog*
+	sleep 2
+}
 
 function aguarde() {
 	sleep 1
 	helice() {
-		updateProject >/dev/null 2>&1 &
+		dependencias >/dev/null 2>&1 &
+		fun_limpram >/dev/null 2>&1 &
 		tput civis
 		while [ -d /proc/$! ]; do
 			for i in / - \\ \|; do
@@ -105,7 +121,6 @@ function aguarde() {
 	helice
 	echo -e "\e[1DOk"
 }
-aguarde
 
 updateProject(){
 	if [[ ! $(type pip 2>/dev/null) ]]; then
@@ -169,11 +184,12 @@ installFinish(){
 main(){
 	title 'INSTALADO DEPENDENCIAS V2RAY'
 
-    dependencias
+    aguarde
     closeSELinux
     timeSync
     updateProject
     profileInit
+    
     installFinish
 }
 

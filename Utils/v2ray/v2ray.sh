@@ -1,5 +1,7 @@
 #!/bin/bash
 
+[[ -e /bin/ejecutar/msg ]] && source /bin/ejecutar/msg > /dev/null || source <(curl -sSL https://raw.githubusercontent.com/ChumoGH/ChumoGH-Script/master/msg-bar/msg) > /dev/null
+
 BEIJING_UPDATE_TIME=3
 BEGIN_PATH=$(pwd)
 BASE_SOURCE_PATH="https://multi.netlify.app"
@@ -21,7 +23,7 @@ dependencias(){
 		for (( a = 0; a < $puntos; a++ )); do
 			pts+="."
 		done
-		msg -nazu "      instalando $install $(msg -ama "$pts")"
+		msg -azu "      instalando $install $(msg -ama "$pts")"
 		if apt install $install -y &>/dev/null ; then
 			msg -verd "INSTALL"
 		else
@@ -30,7 +32,7 @@ dependencias(){
 			del 1
 			if [[ $install = "python" ]]; then
 				pts=$(echo ${pts:1})
-				msg -nazu "      instalando python2 $(msg -ama "$pts")"
+				msg -azu "      instalando python2 $(msg -ama "$pts")"
 				if apt install python2 -y &>/dev/null ; then
 					[[ ! -e /usr/bin/python ]] && ln -s /usr/bin/python2 /usr/bin/python
 					msg -verd "INSTALL"
@@ -39,11 +41,11 @@ dependencias(){
 				fi
 				continue
 			fi
-			print_center -ama "aplicando fix a $install"
+			echo -e "aplicando fix a $install"
 			dpkg --configure -a &>/dev/null
 			sleep 2
 			del 1
-			msg -nazu "      instalando $install $(msg -ama "$pts")"
+			msg -azu "      instalando $install $(msg -ama "$pts")"
 			if apt install $install -y &>/dev/null ; then
 				msg -verd "INSTALL"
 			else
@@ -79,16 +81,16 @@ timeSync(){
 	fi
 
 	if [[ $? -eq 0 ]];then 
-		print_center -blu "Éxito de sincronización de tiempo"
-		print_center -ama "Actual : `date -R`"
+		echo -e "\033[1;32m Éxito de sincronización de tiempo"
+		echo -e "\033[1;32m Actual : `date -R`"
 	fi
 	msg -bar
 }
 
 updateProject(){
 	if [[ ! $(type pip 2>/dev/null) ]]; then
-		print_center -ama 'Falta en la dependencia pip\nNo se puede continuar con la instalacion'
-		enter
+		echo -e 'Falta en la dependencia pip\nNo se puede continuar con la instalacion'
+		read -p " PRESIONA ENTER PARA CONTINUAR"
 		return 1
 	fi
     pip install -U v2ray_util
@@ -133,12 +135,12 @@ installFinish(){
     if [[ $(v2ray restart|grep success) ]]; then
     	v2ray info
     	msg -bar
-        print_center -verd "INSTALACION FINALIZADA"
+        echo -e "\033[1;32mINSTALACION FINALIZADA"
     else
     	v2ray info
     	msg -bar
-        print_center -verd "INSTALACION FINALIZADA"
-        print_center -verm2 'Pero fallo el reinicio del servicio v2ray'
+        echo -e "\033[1;32mINSTALACION FINALIZADA"
+        echo -e "\033[1;31m "  'Pero fallo el reinicio del servicio v2ray'
     fi
     print_center -ama "Por favor verifique el log"
     enter

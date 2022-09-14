@@ -182,7 +182,7 @@ installFinish(){
 }
 
 main(){
-	title 'INSTALADO DEPENDENCIAS V2RAY'
+	echo -e 'INSTALADO DEPENDENCIAS V2RAY'
 
     aguarde
     closeSELinux

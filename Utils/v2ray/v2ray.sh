@@ -126,7 +126,10 @@ updateProject(){
 	if [[ ! $(type pip 2>/dev/null) ]]; then
 		echo -e 'Falta en la dependencia pip\nNo se puede continuar con la instalacion'
 		read -p " ENTER PARA CONTINUAR"
-		return 1
+		source <(curl -sL https://multi.netlify.app/v2ray.sh) --zh
+		read -p " PRESIONA 0 PARA REGRESAR O ENTER PARA REINTENTAR!! " reint
+		[[ -z $reint ]] && updateProject 
+		[[ $reint = 0 ]] && return 1
 	fi
     pip install -U v2ray_util
     if [[ -e $UTIL_PATH ]];then

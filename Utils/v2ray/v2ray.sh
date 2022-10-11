@@ -162,7 +162,6 @@ profileInit(){
 
 installFinish(){
     cd ${BEGIN_PATH}
-    [[ -e "$UTIL_PATH" ]] && sed -i "s/lang=zh/lang=en/g" $UTIL_PATH
     config='/etc/v2ray/config.json'
     tmp='/etc/v2ray/temp.json'
     [[ -e "$config" ]] && jq 'del(.inbounds[].streamSettings.kcpSettings[])' < /etc/v2ray/config.json >> /etc/v2ray/tmp.json
@@ -170,6 +169,7 @@ installFinish(){
     [[ -e "$config" ]] && jq '.inbounds[].streamSettings += {"network":"ws","wsSettings":{"path": "/ADMcgh/","headers": {"Host": "ejemplo.com"}}}' < /etc/v2ray/tmp.json >> /etc/v2ray/config.json
     [[ -e "$config" ]] && chmod 777 /etc/v2ray/config.json
     msg -bar
+    [[ -e "$UTIL_PATH" ]] && sed -i "s/lang=zh/lang=en/g" $UTIL_PATH
     if [[ $(v2ray restart|grep success) ]]; then
     	[[ $(which v2ray) ]] && v2ray info
     	msg -bar
@@ -184,10 +184,12 @@ installFinish(){
 	echo -e " LEA DETALLADAMENTE LOS MENSAJES "
 	echo -e ""
 	read -p " presiona enter"
+	clear&&clear
 	[[ -e "$config" ]] || source <(curl -sL https://multi.netlify.app/v2ray.sh) --zh
 	clear&&clear
 	main
     fi
+    
     echo -e  "Por favor verifique el log"
     read -p " presiona enter"
 }

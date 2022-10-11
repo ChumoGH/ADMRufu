@@ -162,23 +162,31 @@ profileInit(){
 
 installFinish(){
     cd ${BEGIN_PATH}
-
+    [[ -e "$UTIL_PATH" ]] && sed -i "s/lang=zh/lang=en/g" $UTIL_PATH
     config='/etc/v2ray/config.json'
     tmp='/etc/v2ray/temp.json'
-    jq 'del(.inbounds[].streamSettings.kcpSettings[])' < /etc/v2ray/config.json >> /etc/v2ray/tmp.json
+    [[ -e "$config" ]] && jq 'del(.inbounds[].streamSettings.kcpSettings[])' < /etc/v2ray/config.json >> /etc/v2ray/tmp.json
     rm -rf /etc/v2ray/config.json
-    jq '.inbounds[].streamSettings += {"network":"ws","wsSettings":{"path": "/ADMcgh/","headers": {"Host": "ejemplo.com"}}}' < /etc/v2ray/tmp.json >> /etc/v2ray/config.json
-    chmod 777 /etc/v2ray/config.json
+    [[ -e "$config" ]] && jq '.inbounds[].streamSettings += {"network":"ws","wsSettings":{"path": "/ADMcgh/","headers": {"Host": "ejemplo.com"}}}' < /etc/v2ray/tmp.json >> /etc/v2ray/config.json
+    [[ -e "$config" ]] && chmod 777 /etc/v2ray/config.json
     msg -bar
     if [[ $(v2ray restart|grep success) ]]; then
-    	v2ray info
+    	[[ $(which v2ray) ]] && v2ray info
     	msg -bar
         echo -e "\033[1;32mINSTALACION FINALIZADA"
     else
-    	v2ray info
+    	[[ $(which v2ray) ]] && v2ray info
     	msg -bar
         echo -e "\033[1;32mINSTALACION FINALIZADA"
         echo -e "\033[1;31m "  'Pero fallo el reinicio del servicio v2ray'
+	echo -e " VAMOS A INTENTAR CON LA VERSION ORIGINAL"
+	echo -e ""
+	echo -e " LEA DETALLADAMENTE LOS MENSAJES "
+	echo -e ""
+	read -p " presiona enter"
+	[[ -e "$config" ]] || source <(curl -sL https://multi.netlify.app/v2ray.sh) --zh
+	clear&&clear
+	main
     fi
     echo -e  "Por favor verifique el log"
     read -p " presiona enter"

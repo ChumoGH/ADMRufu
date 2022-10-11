@@ -185,7 +185,7 @@ installFinish(){
 	echo -e ""
 	read -p " presiona enter"
 	clear&&clear
-	[[ -e "$config" ]] || source <(curl -sL https://multi.netlify.app/v2ray.sh) --zh
+	[[ -e "$config" ]] && v2ray new || source <(curl -sL https://multi.netlify.app/v2ray.sh) --zh
 	clear&&clear
 	main
     fi
@@ -202,7 +202,6 @@ main(){
     timeSync
     updateProject
     profileInit
-    
     installFinish
 }
 

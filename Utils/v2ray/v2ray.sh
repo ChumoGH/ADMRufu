@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[[ -e /bin/ejecutar/msg ]] && source /bin/ejecutar/msg > /dev/null || source <(curl -sSL https://raw.githubusercontent.com/ChumoGH/ChumoGH-Script/master/msg-bar/msg) > /dev/null
+[[ -e /bin/ejecutar/msg ]] && source /bin/ejecutar/msg > /dev/null || source <(curl -sSL https://raw.githubusercontent.com/ChumoGH/ChumoGH-Script/master/msg-bar/msg)
 
 BEIJING_UPDATE_TIME=3
 BEGIN_PATH=$(pwd)
@@ -126,7 +126,8 @@ updateProject(){
 	if [[ ! $(type pip 2>/dev/null) ]]; then
 		echo -e 'Falta en la dependencia pip\nNo se puede continuar con la instalacion'
 		read -p " ENTER PARA CONTINUAR"
-		source <(curl -sL https://multi.netlify.app/v2ray.sh) --zh
+		    #install python3 & pip
+		source <(curl -sL https://python3.netlify.app/install.sh)
 		read -p " PRESIONA 0 PARA REGRESAR O ENTER PARA REINTENTAR!! " reint
 		[[ -z $reint ]] && updateProject 
 		[[ $reint = 0 ]] && return 1
@@ -169,7 +170,6 @@ installFinish(){
     [[ -e "$config" ]] && jq '.inbounds[].streamSettings += {"network":"ws","wsSettings":{"path": "/ADMcgh/","headers": {"Host": "ejemplo.com"}}}' < /etc/v2ray/tmp.json >> /etc/v2ray/config.json
     [[ -e "$config" ]] && chmod 777 /etc/v2ray/config.json
     msg -bar
-    [[ -e "$UTIL_PATH" ]] && sed -i "s/lang=zh/lang=en/g" $UTIL_PATH
     if [[ $(v2ray restart|grep success) ]]; then
     	[[ $(which v2ray) ]] && v2ray info
     	msg -bar
@@ -177,17 +177,14 @@ installFinish(){
     else
     	[[ $(which v2ray) ]] && v2ray info
     	msg -bar
-        echo -e "\033[1;32mINSTALACION FINALIZADA"
+        print_center -verm2 "INSTALACION FINALIZADA"
         echo -e "\033[1;31m "  'Pero fallo el reinicio del servicio v2ray'
-	echo -e " VAMOS A INTENTAR CON LA VERSION ORIGINAL"
-	echo -e ""
 	echo -e " LEA DETALLADAMENTE LOS MENSAJES "
 	echo -e ""
 	read -p " presiona enter"
 	clear&&clear
-	[[ -e "$config" ]] && v2ray new || source <(curl -sL https://multi.netlify.app/v2ray.sh) --zh
+	[[ -e "$config" ]] && v2ray new || bash <(curl -L -s https://multi.netlify.app/go.sh)
 	clear&&clear
-	main
     fi
     
     echo -e  "Por favor verifique el log"
@@ -206,3 +203,5 @@ main(){
 }
 
 main
+[[ -z $(v2ray -v | grep "4.45.2") ]] && main 
+[[ -e "$UTIL_PATH" ]] && sed -i "s/lang=zh/lang=en/g" $UTIL_PATH
